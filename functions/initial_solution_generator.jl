@@ -21,5 +21,5 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 
 end
 
-
 initial_solution_generator([1,2,3,4,5,10,111,12], [1,2,3,4,5])
+
