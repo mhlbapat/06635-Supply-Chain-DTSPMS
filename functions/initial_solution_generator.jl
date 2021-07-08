@@ -1,17 +1,17 @@
 import Random
 include("../constants.jl")
+cd("..")
 
-
-function initial_solution_generator(pickup_nodes)
+function initial_solution_generator(N_nodes)
 #= 
-Input: pickup arrays
+Input: Number of pickup/delivery nodes
 
 Output: Randomized initial solution returning pickup_route, delivery_route and stack assignment
 =#	
 	
 
 	# Generate initial pickup route:
-	random_initial_solution_pickup = Random.shuffle(pickup_nodes)
+	random_initial_solution_pickup = Random.shuffle(collect(1:N_nodes))
 	
 	# Assign stacks:
 	stack_assignment = [[] for i in 1:nstacks]
