@@ -2,9 +2,9 @@ import Random
 include("../constants.jl")
 
 
-function initial_solution_generator(pickup_nodes, delivery_nodes)
+function initial_solution_generator(pickup_nodes)
 #= 
-Input: pickup, delivery arrays
+Input: pickup arrays
 
 Output: Randomized initial solution returning pickup_route, delivery_route and stack assignment
 =#	
@@ -25,8 +25,6 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 		all_methods[index_way]
 	end
 
-	delivery_method = "stack-wise reverse"
-
 	if delivery_method == all_methods[1]
 		random_initial_solution_delivery = reverse(random_initial_solution_pickup)	
 
@@ -36,19 +34,27 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 		
 
 	elseif delivery_method == all_methods[3]
-		random_initial_solution_delivery = []
-		route_length = length(random_initial_solution_pickup)
-		temp_stack_assignment = Array(stack_assignment)
-		append!(random_initial_solution_delivery, pop!(temp_stack_assignment[rand(1:length())]))
+		random_initial_solution_delivery = Array{Int64}([])
+		temp_stack_assignment = deepcopy(stack_assignment)
+
+		while any(!isempty(temp_stack_assignment[i]) for i in 1:length(temp_stack_assignment))
+			
+			temp_stack_index = rand(1:length(temp_stack_assignment))
+
+			if !isempty(temp_stack_assignment[temp_stack_index])
+				temp_stack_append_element = pop!(temp_stack_assignment[temp_stack_index])
+			else
+				continue
+			end
+
+			append!(random_initial_solution_delivery, temp_stack_append_element)
+		end
+
 		
 	end
 
-	# println(flatten(stack_assignment))
-	println(random_initial_solution_pickup, "   ",stack_assignment, "  delivery_nodes: ", random_initial_solution_delivery)
-	# println(stack_assignment[3])
 
+return (random_initial_solution_pickup, random_initial_solution_delivery, stack_assignment)
 
 
 end
-
-initial_solution_generator([1,2,3,4,5,10,111,12], [1,2,3,4,5])
