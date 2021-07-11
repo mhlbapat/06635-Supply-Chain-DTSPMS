@@ -54,7 +54,7 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 	end
 
 
-return (random_initial_solution_pickup, random_initial_solution_delivery, stack_assignment)
+	return (random_initial_solution_pickup, random_initial_solution_delivery, stack_assignment)
 
 
 end

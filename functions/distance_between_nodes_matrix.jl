@@ -1,8 +1,6 @@
 import CSV
 import DataFrames
 
-cd("../Datasets/0")
-
 function distance_between_nodes_matrix(datafile)
 	#=
 	Input: Distance file, Node 1, Node 2
@@ -13,6 +11,9 @@ function distance_between_nodes_matrix(datafile)
 	=#
 	datafile_data = CSV.File(datafile; delim=" ", header=false, skipto=7)
 	data = DataFrames.DataFrame(datafile_data)
+	total_nodes_datafile = size(data)[1]
+	
+
 	# node1 = 1
 	# node2 = 2
 	# node1_coord = data[node1,2]
@@ -22,9 +23,15 @@ function distance_between_nodes_matrix(datafile)
 	# println(node1_coord)
 	# println(node2_coord)
 
+	for i in 1:total_nodes_datafile
+
+	end
+
+	println()
+
 
 
 end
 
 
-distance_between_nodes_matrix("R00d.tsp")
+distance_between_nodes_matrix("../Datasets/0/R00d.tsp")
