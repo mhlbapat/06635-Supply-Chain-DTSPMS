@@ -1,5 +1,6 @@
+import DataFrames as df
 import CSV
-import DataFrames
+import LinearAlgebra as linalg
 
 function distance_between_nodes_matrix(datafile)
 	#=
@@ -9,29 +10,26 @@ function distance_between_nodes_matrix(datafile)
 
 	Output: Euclidean distance between Node 1 and Node 2
 	=#
+
 	datafile_data = CSV.File(datafile; delim=" ", header=false, skipto=7)
-	data = DataFrames.DataFrame(datafile_data)
+	data = df.DataFrame(datafile_data)
 	total_nodes_datafile = size(data)[1]
-	
 
-	# node1 = 1
-	# node2 = 2
-	# node1_coord = data[node1,2]
-	# node2_coord = data[node2,2]
-
-
-	# println(node1_coord)
-	# println(node2_coord)
+	# Square matrix of distances, distance_matrix[i][j] is the distance between node i and node j
+	distance_matrix = zeros(total_nodes_datafile, total_nodes_datafile)
 
 	for i in 1:total_nodes_datafile
+		for j in 1:total_nodes_datafile
+			node1 = Array(data[i,2:3])
+			node2 = Array(data[j,2:3])
+
+			distance_matrix[i,j] = linalg.norm(node1-node2)
+		end
 
 	end
 
-	println()
 
 
+	return distance_matrix
 
 end
-
-
-distance_between_nodes_matrix("../Datasets/0/R00d.tsp")

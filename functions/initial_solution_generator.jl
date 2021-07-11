@@ -1,6 +1,5 @@
 import Random
 include("../constants.jl")
-cd("..")
 
 function initial_solution_generator(N_nodes)
 #= 
