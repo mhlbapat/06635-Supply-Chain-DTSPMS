@@ -20,8 +20,8 @@ function distance_between_nodes_matrix(datafile)
 
 	for i in 1:total_nodes_datafile
 		for j in 1:total_nodes_datafile
-			node1 = Array(data[i,2:3])
-			node2 = Array(data[j,2:3])
+			node1 = Array(data[i,2:end])
+			node2 = Array(data[j,2:end])
 
 			distance_matrix[i,j] = linalg.norm(node1-node2)
 		end
