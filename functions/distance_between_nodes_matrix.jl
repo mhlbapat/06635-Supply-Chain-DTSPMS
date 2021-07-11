@@ -28,8 +28,6 @@ function distance_between_nodes_matrix(datafile)
 
 	end
 
-
-
 	return distance_matrix
 
 end
