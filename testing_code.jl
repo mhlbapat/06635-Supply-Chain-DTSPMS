@@ -4,7 +4,9 @@ include("functions/initial_solution_generator.jl")
 include("functions/route_swap.jl")
 
 
-pickupnodes, deliverynodes, stacks = initial_solution_generator(34)
+pickupnodes, deliverynodes, stacks = initial_solution_generator(10)
+
 route_swap_neighborhood = route_swap(pickupnodes,deliverynodes,stacks)
 
 println(size(route_swap_neighborhood))
+println(route_swap_neighborhood[2])
