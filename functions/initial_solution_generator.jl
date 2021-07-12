@@ -15,6 +15,7 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 	# Assign stacks:
 	stack_assignment = [[] for i in 1:nstacks]
 	[append!(stack_assignment[mod(i, nstacks)+1], random_initial_solution_pickup[i]) for i in 1:length(random_initial_solution_pickup)]
+	stack_assignment = Array(stack_assignment)
 
 	# Randomly decide the delivery route:
 	# There are 3 ways: reverese, stack-wise reverse and random-stack-select
