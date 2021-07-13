@@ -40,33 +40,7 @@ function route_swap(pickup_route, delivery_route, stack_assignment)
 		end
 	end
 
-	# Swap for delivery route only
-	for i in 1:length_route-1
-		temp_stack_assignment_delivery = deepcopy(stack_assignment)
-		temp_pickup_route_dswap = deepcopy(pickup_route)
-		temp_delivery_route_dswap = deepcopy(delivery_route)
-
-		# Swap in delivery route
-		temp_delivery_route_dswap[i], temp_delivery_route_dswap[i+1] = temp_delivery_route_dswap[i+1], temp_delivery_route_dswap[i]
-
-		# Check if in the same stack
-		if any([(temp_delivery_route_dswap[i] in temp_stack_assignment_delivery[j]) && (temp_delivery_route_dswap[i+1] in temp_stack_assignment_delivery[j]) for j in 1:nstacks])
-			# Swap in stack assignment
-			index_of_temp_i = [findfirst(!isempty, findall.(x->x==temp_delivery_route_dswap[i], temp_stack_assignment_delivery)), findall.(x->x==temp_delivery_route_dswap[i], temp_stack_assignment_delivery)[findfirst(!isempty, findall.(x->x==temp_delivery_route_dswap[i],temp_stack_assignment_delivery))][1]]
-			index_of_temp_iplus1 = [findfirst(!isempty, findall.(x->x==temp_delivery_route_dswap[i+1], temp_stack_assignment_delivery)), findall.(x->x==temp_delivery_route_dswap[i+1], temp_stack_assignment_delivery)[findfirst(!isempty, findall.(x->x==temp_delivery_route_dswap[i+1], temp_stack_assignment_delivery))][1]]
-
-			println(index_of_temp_i, index_of_temp_iplus1)
-			println(temp_stack_assignment_delivery[index_of_temp_iplus1])
-			temp_stack_assignment_delivery[index_of_temp_i], temp_stack_assignment_delivery[index_of_temp_iplus1] = temp_stack_assignment_delivery[index_of_temp_iplus1], temp_stack_assignment_delivery[index_of_temp_i]
-
-			# Swap in pickup route
-			temp_pickup_route_dswap[findall(x->x==temp_delivery_route_dswap[i],temp_pickup_route_dswap)], temp_pickup_route_dswap[findall(x->x==temp_delivery_route_dswap[i+1],temp_pickup_route_dswap)] = temp_pickup_route_dswap[findall(x->x==temp_delivery_route_dswap[i+1],temp_pickup_route_dswap)], temp_pickup_route_dswap[findall(x->x==temp_delivery_route[i],temp_pickup_route_dswap)]
-		end
-
-		if (temp_pickup_route, temp_delivery_route_dswap, temp_stack_assignment_delivery) ∉ route_swap_nhlist
-			append!(route_swap_nhlist, [(temp_pickup_route, temp_delivery_route_dswap, temp_stack_assignment_delivery)])
-		end
-	end
+	
 
 
 
