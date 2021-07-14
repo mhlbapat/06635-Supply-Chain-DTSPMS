@@ -17,10 +17,23 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 		all_stack_methods = ["random stacks", "i mod m", " floor(i/Q)"]
 		all_stack_methods[rand(1:length(all_stack_methods))]
 	end
+	println(stack_assignment_method)
+	if stack_assignment_method == all_stack_methods[1]
+		stack_assignment = [[] for i in 1:nstacks]
+		for i in 1:length(random_initial_solution_pickup)
+			available_stacks = findall(x->length(x) < stack_capacity, stack_assignment)
+			append!(stack_assignment[available_stacks[rand(1:length(available_stacks))]], random_initial_solution_pickup[i])
+		end
+	
+	elseif stack_assignment_method == all_stack_methods[2]
+		stack_assignment = [[] for i in 1:nstacks]
+		[append!(stack_assignment[mod(i, nstacks)+1], random_initial_solution_pickup[i]) for i in 1:length(random_initial_solution_pickup)]
+		stack_assignment = Array(stack_assignment)
+	
+	# elseif stack_assignment_method == all_stack_methods[3]
 
-	stack_assignment = [[] for i in 1:nstacks]
-	[append!(stack_assignment[mod(i, nstacks)+1], random_initial_solution_pickup[i]) for i in 1:length(random_initial_solution_pickup)]
-	stack_assignment = Array(stack_assignment)
+
+	end
 
 	# Randomly decide the delivery route:
 	# There are 3 ways: reverese, stack-wise reverse and random-stack-select
