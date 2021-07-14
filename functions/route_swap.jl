@@ -27,12 +27,11 @@ function route_swap(pickup_route, delivery_route, stack_assignment)
 		# Check if in the same stack
 		if any([(temp_pickup_route[i] in temp_stack_assignment[j]) && (temp_pickup_route[i+1] in temp_stack_assignment[j]) for j in 1:nstacks])
 			# Swap in stack assignment
-			index_of_temp_i = [findfirst(!isempty, findall.(x->x==temp_pickup_route[i], temp_stack_assignment)), findall.(x->x==temp_pickup_route[i], temp_stack_assignment)[findfirst(!isempty, findall.(x->x==temp_pickup_route[i],temp_stack_assignment))][1]]
-			index_of_temp_iplus1 = [findfirst(!isempty, findall.(x->x==temp_pickup_route[i+1], temp_stack_assignment)), findall.(x->x==temp_pickup_route[i+1], temp_stack_assignment)[findfirst(!isempty, findall.(x->x==temp_pickup_route[i+1], temp_stack_assignment))][1]]
-			temp_stack_assignment[index_of_temp_i], temp_stack_assignment[index_of_temp_iplus1] = temp_stack_assignment[index_of_temp_iplus1], temp_stack_assignment[index_of_temp_i]
+			replace.(temp_stack_assignment, temp_pickup_route[i]=>temp_pickup_route[i+1], temp_pickup_route[i+1]=>temp_pickup_route[i])
 
 			# Swap in delivery route
-			temp_delivery_route[findall(x->x==temp_pickup_route[i],temp_delivery_route)], temp_delivery_route[findall(x->x==temp_pickup_route[i+1],temp_delivery_route)] = temp_delivery_route[findall(x->x==temp_pickup_route[i+1],temp_delivery_route)], temp_delivery_route[findall(x->x==temp_pickup_route[i],temp_delivery_route)]
+			replace!(temp_delivery_route, temp_pickup_route[i]=>temp_pickup_route[i+1], temp_pickup_route[i+1]=>temp_pickup_route[i])
+			
 		end
 
 		if (temp_pickup_route, temp_delivery_route, temp_stack_assignment) ∉ route_swap_nhlist
@@ -50,12 +49,18 @@ function route_swap(pickup_route, delivery_route, stack_assignment)
 		temp_ddelivery_route[i], temp_ddelivery_route[i+1] = temp_ddelivery_route[i+1], temp_ddelivery_route[i]
 
 		# Check if the delivery was made from same stack
-		if any([(temp_ddelivery_route[i] in temp_stack_assignment[j]) && (temp_ddelivery_route[i+1])])
-			
+		if any([(temp_ddelivery_route[i] in temp_dstack_assignment[j]) && (temp_ddelivery_route[i+1] in temp_dstack_assignment[j]) for j in 1:nstacks])
+			# Swap in stack assignment
+			replace.(temp_dstack_assignment, temp_ddelivery_route[i]=>temp_ddelivery_route[i+1], temp_ddelivery_route[i+1]=>temp_ddelivery_route[i])
+
+			# Swap in pickup route
+			replace!(temp_dpickup_route, temp_ddelivery_route[i]=>temp_ddelivery_route[i+1], temp_ddelivery_route[i+1]=>temp_ddelivery_route[i])
+		end
+
+		if (temp_dpickup_route, temp_ddelivery_route, temp_dstack_assignment) ∉ route_swap_nhlist
+			append!(route_swap_nhlist, [(temp_dpickup_route, temp_ddelivery_route, temp_dstack_assignment)])
 		end
 	end
-
-
 
 
 	return route_swap_nhlist
