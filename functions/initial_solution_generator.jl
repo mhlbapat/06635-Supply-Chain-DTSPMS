@@ -32,8 +32,9 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 		stack_assignment = Array(stack_assignment)
 	
 	elseif stack_assignment_method == all_stack_methods[3]
+		stack_assignment = [[] for i in 1:nstacks]
 		for i in 1:length(random_initial_solution_pickup)
-			append!(stack_assignment[floor(i/stack_capacity)+1], random_initial_solution_pickup[i])
+			append!(stack_assignment[Int64(floor(i/(stack_capacity+0.1))+1)], random_initial_solution_pickup[i])
 		end
 
 	end
