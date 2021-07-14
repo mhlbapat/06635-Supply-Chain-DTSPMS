@@ -40,7 +40,20 @@ function route_swap(pickup_route, delivery_route, stack_assignment)
 		end
 	end
 
-	
+
+	for i in 1:length_route-1
+		temp_dstack_assignment = deepcopy(stack_assignment)
+		temp_dpickup_route = deepcopy(pickup_route)
+		temp_ddelivery_route = deepcopy(delivery_route)
+
+		# Swap in delivery route now:
+		temp_ddelivery_route[i], temp_ddelivery_route[i+1] = temp_ddelivery_route[i+1], temp_ddelivery_route[i]
+
+		# Check if the delivery was made from same stack
+		if any([(temp_ddelivery_route[i] in temp_stack_assignment[j]) && (temp_ddelivery_route[i+1])])
+			
+		end
+	end
 
 
 
