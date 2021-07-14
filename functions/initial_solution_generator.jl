@@ -12,7 +12,12 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 	# Generate initial pickup route:
 	random_initial_solution_pickup = Random.shuffle(collect(1:N_nodes))
 	
-	# Assign stacks:
+	# Assign stacks: 3 ways to assign stacks
+	stack_assignment_method = begin
+		all_stack_methods = ["random stacks", "i mod m", " floor(i/Q)"]
+		all_stack_methods[rand(1:length(all_stack_methods))]
+	end
+
 	stack_assignment = [[] for i in 1:nstacks]
 	[append!(stack_assignment[mod(i, nstacks)+1], random_initial_solution_pickup[i]) for i in 1:length(random_initial_solution_pickup)]
 	stack_assignment = Array(stack_assignment)
@@ -20,9 +25,8 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 	# Randomly decide the delivery route:
 	# There are 3 ways: reverese, stack-wise reverse and random-stack-select
 	delivery_method = begin
-		index_way = rand(1:3)
 		all_methods = ["reverese", "stack-wise reverse", "random stack select"]
-		all_methods[index_way]
+		all_methods[rand(1:length(all_methods))]
 	end
 
 	if delivery_method == all_methods[1]
@@ -52,7 +56,6 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 
 		
 	end
-
 
 	return (random_initial_solution_pickup, random_initial_solution_delivery, stack_assignment)
 
