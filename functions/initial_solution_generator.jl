@@ -18,7 +18,6 @@ Output: Randomized initial solution returning pickup_route, delivery_route and s
 		all_stack_methods[rand(1:length(all_stack_methods))]
 	end
 
-	println(stack_assignment_method)
 	if stack_assignment_method == all_stack_methods[1]
 		stack_assignment = [[] for i in 1:nstacks]
 		for i in 1:length(random_initial_solution_pickup)
