@@ -25,7 +25,10 @@ function reinsertion(pickup_route, delivery_route, stack_assignment)
 			node_V = temp_pickup_route[j]
 
 			if node_U != node_V
-				position_U = findall!(x->x==node_U,temp_pickup_route)
+				position_U = findall(x->x==node_U, temp_pickup_route)
+				position_V = findall(x->x==node_V, temp_pickup_route)
+
+				
 			end
 		end
 	end
