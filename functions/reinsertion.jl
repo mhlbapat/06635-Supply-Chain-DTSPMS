@@ -62,23 +62,32 @@ function reinsertion(pickup_route, delivery_route, stack_assignment)
 				new_position_of_U_delivery = findall(x->x==node_U, temp_delivery_route)[1]
 
 				# Remove last element from the new_stack_of_U
-				println(new_stack_of_U)
-				println(temp_stack_assignment)
 				last_node_new_stack_of_U = temp_stack_assignment[new_stack_of_U][end]
 				deleteat!(temp_stack_assignment[new_stack_of_U], findall(y->y==last_node_new_stack_of_U, temp_stack_assignment[new_stack_of_U]))
 
 
 				# Find the items delivered before node_U and in the new stack of node_U
 				delivered_before_U_new_stack = intersect(temp_delivery_route[1:(new_position_of_U_delivery-1)], temp_stack_assignment[new_stack_of_U])
-				position_of_U_new_stack = minimum([findall(x->x==delivered_before_U_new_stack[l], temp_stack_assignment[new_stack_of_U]) for l in 1:length(delivered_before_U_new_stack)])
-				insert!(temp_stack_assignment[new_stack_of_U], position_of_U_new_stack, node_U)
+
+				if isempty(delivered_before_U_new_stack)
+					append!(temp_stack_assignment[new_stack_of_U], node_U)
+				else
+					position_of_U_new_stack = minimum([findall(x->x==delivered_before_U_new_stack[l], temp_stack_assignment[new_stack_of_U])[1] for l in 1:length(delivered_before_U_new_stack)])
+					insert!(temp_stack_assignment[new_stack_of_U], position_of_U_new_stack, node_U)
+				end
 
 				# Insert last_node_new_stack_of_U into stack_of_U such that its position is before the items delivered before it
-				position_last_node_nsU = findall(x->x==last_node_new_stack_of_U, temp_delivery_route)
-				delivered_before_last_node_nsU = intersect(temp_delivery_route(1:(position_last_node_nsU-1)), temp_stack_assignment[stack_of_U])
-				position_of_item_before_last_node_nsU = minimum([findall(x->x==delivered_before_last_node_nsU[l], temp_stack_assignment[stack_of_U]) for l in 1:length(delivered_before_last_node_nsU)])
-				insert!(temp_stack_assignment[stack_of_U], position_of_item_before_last_node_nsU, last_node_new_stack_of_U)
-
+				position_last_node_nsU = findall(x->x==last_node_new_stack_of_U, temp_delivery_route)[1]
+				println(position_last_node_nsU)
+				delivered_before_last_node_nsU = intersect(temp_delivery_route[1:(position_last_node_nsU-1)], temp_stack_assignment[stack_of_U])
+				
+				if isempty(delivered_before_last_node_nsU)
+					append!(temp_stack_assignment[stack_of_U], last_node_new_stack_of_U)
+				else					
+					position_of_item_before_last_node_nsU = minimum([findall(x->x==delivered_before_last_node_nsU[l], temp_stack_assignment[stack_of_U])[1] for l in 1:length(delivered_before_last_node_nsU)])
+					insert!(temp_stack_assignment[stack_of_U], position_of_item_before_last_node_nsU, last_node_new_stack_of_U)
+				end
+				
 				# Append into the nhlist
 				if (temp_pickup_route, temp_delivery_route, temp_stack_assignment) ∉ reinsertion_nhlist
 					append!(reinsertion_nhlist, [(temp_pickup_route, temp_delivery_route, temp_stack_assignment)])
