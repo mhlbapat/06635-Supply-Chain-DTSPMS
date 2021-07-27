@@ -37,7 +37,7 @@ function reinsertion(pickup_route, delivery_route, stack_assignment)
 					deleteat!(temp_pickup_route, position_U_pickup)
 				else
 					insert!(temp_pickup_route, position_V_pickup, node_U)
-					deleteat!(temp_pickup_route, position_U_pickup)
+					deleteat!(temp_pickup_route, position_U_pickup+1)
 				end
 
 				# Change in delivery route
@@ -46,7 +46,7 @@ function reinsertion(pickup_route, delivery_route, stack_assignment)
 					deleteat!(temp_delivery_route, position_U_delilvery)
 				else
 					insert!(temp_delivery_route, position_V_delilvery, node_U)
-					deleteat!(temp_delivery_route, position_U_delilvery)
+					deleteat!(temp_delivery_route, position_U_delilvery+1)
 				end
 
 
@@ -63,11 +63,17 @@ function reinsertion(pickup_route, delivery_route, stack_assignment)
 
 				# Remove last element from the new_stack_of_U
 				last_node_new_stack_of_U = temp_stack_assignment[new_stack_of_U][end]
+				
+
 				deleteat!(temp_stack_assignment[new_stack_of_U], findall(y->y==last_node_new_stack_of_U, temp_stack_assignment[new_stack_of_U]))
 
 
 				# Find the items delivered before node_U and in the new stack of node_U
-				delivered_before_U_new_stack = intersect(temp_delivery_route[1:(new_position_of_U_delivery-1)], temp_stack_assignment[new_stack_of_U])
+				if new_position_of_U_delivery > 1
+					delivered_before_U_new_stack = intersect(temp_delivery_route[1:(new_position_of_U_delivery-1)], temp_stack_assignment[new_stack_of_U])
+				else
+					delivered_before_U_new_stack = []
+				end
 
 				if isempty(delivered_before_U_new_stack)
 					append!(temp_stack_assignment[new_stack_of_U], node_U)
@@ -78,9 +84,13 @@ function reinsertion(pickup_route, delivery_route, stack_assignment)
 
 				# Insert last_node_new_stack_of_U into stack_of_U such that its position is before the items delivered before it
 				position_last_node_nsU = findall(x->x==last_node_new_stack_of_U, temp_delivery_route)[1]
-				println(position_last_node_nsU)
-				delivered_before_last_node_nsU = intersect(temp_delivery_route[1:(position_last_node_nsU-1)], temp_stack_assignment[stack_of_U])
-				
+
+				if position_last_node_nsU > 1
+					delivered_before_last_node_nsU = intersect(temp_delivery_route[1:(position_last_node_nsU-1)], temp_stack_assignment[stack_of_U])
+				else
+					delivered_before_last_node_nsU = []
+				end
+
 				if isempty(delivered_before_last_node_nsU)
 					append!(temp_stack_assignment[stack_of_U], last_node_new_stack_of_U)
 				else					
@@ -88,6 +98,7 @@ function reinsertion(pickup_route, delivery_route, stack_assignment)
 					insert!(temp_stack_assignment[stack_of_U], position_of_item_before_last_node_nsU, last_node_new_stack_of_U)
 				end
 				
+
 				# Append into the nhlist
 				if (temp_pickup_route, temp_delivery_route, temp_stack_assignment) ∉ reinsertion_nhlist
 					append!(reinsertion_nhlist, [(temp_pickup_route, temp_delivery_route, temp_stack_assignment)])

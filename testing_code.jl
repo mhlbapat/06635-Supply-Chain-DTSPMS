@@ -7,7 +7,7 @@ include("functions/instack_swap.jl")
 include("functions/reinsertion.jl")
 
 
-pickupnodes, deliverynodes, stacks = initial_solution_generator(11)
+pickupnodes, deliverynodes, stacks = initial_solution_generator(33)
 reinsertion_neighborhood = reinsertion(pickupnodes,deliverynodes,stacks)
 
-println(length(reinsertion_neighborhood))
+println(length(reinsertion_neighborhood), "    ", 33^2)
